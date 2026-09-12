@@ -18,11 +18,22 @@ export function Section({ id, flush, className, children, ...props }: SectionPro
       className={cn(
         // `scroll-mt` è volutamente MINORE dell'altezza navbar: così l'offset
         // "mangia" parte del padding della sezione e il titolo atterra subito
-        // sotto la navbar invece di lasciare ~120px di vuoto.
+        // sotto la navbar invece di lasciare un vuoto.
+        // Tarato sul padding attuale: se lo riduci ancora, riduci anche qui.
         // Nota: gli spazi in un arbitrary value Tailwind si scrivono con `_`,
         // perché CSS richiede spazi attorno al meno dentro calc().
-        "relative mx-auto w-full max-w-7xl scroll-mt-[calc(var(--nav-height)_-_2.5rem)] px-6",
-        !flush && "py-24 md:py-32",
+        "relative mx-auto w-full max-w-7xl scroll-mt-[calc(var(--nav-height)_-_1rem)] px-6",
+        // ⚠️ Il padding è SIMMETRICO, quindi al confine tra due sezioni i due
+        // valori si SOMMANO: `py-14 md:py-18` dà 144px di vuoto tra una sezione
+        // e l'altra su desktop (non 72px), 112px su mobile.
+        //
+        // Questo è l'unico punto di controllo della spaziatura verticale.
+        // Valori utili (totale tra le sezioni, desktop):
+        //   py-12 md:py-16 → 128px
+        //   py-14 md:py-18 → 144px  ← attuale
+        //   py-14 md:py-20 → 160px
+        //   py-16 md:py-24 → 192px
+        !flush && "py-14 md:py-14",
         className
       )}
       {...props}

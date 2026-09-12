@@ -1,0 +1,189 @@
+{
+    "basics": {
+        "name": "Giacomo Schinco",
+        "label": "Developer & Product Owner",
+        "image": "avatar.jpeg",
+        "email": "giacomoschinco87@gmail.com",
+        "phone": "3393965881",
+        "summary": "Ho una sola grande qualità, la determinazione. Una volta fissato un obiettivo lo seguirò nonostante ogni difficoltà possa incontrare. Il fallire non è sbagliato, smettere di tentare Sì.",
+        "location": {
+            "city": "Roma",
+            "countryCode": "IT"
+        }
+    },
+    "privacy": {
+        "text": "Autorizzo il trattamento dei miei dati personali ai sensi del D.lgs. 196/2003 e del Regolamento UE 2016/679 (GDPR)."
+    },
+    "work": [
+        {
+            "name": "NODE Soc. Coop.",
+            "position": "Product Owner",
+            "startDate": "2024",
+            "endDate": "2025",
+            "summary": "Gestione del backlog e coordinamento dei progetti mediante metodologie Agile/Scrum.",
+            "highlights": [
+                "Gestione delle priorità di prodotto e ottimizzazione del backlog di team",
+                "Punto di contatto e facilitatore della comunicazione tra Stakeholder e team tecnico",
+                "Monitoraggio costante delle iterazioni e dello stato di avanzamento della progettazione",
+                "Utilizzo quotidiano di Jira e Confluence per il tracciamento dei requisiti"
+            ]
+        },
+        {
+            "name": "Duskrise",
+            "position": "Frontend Developer",
+            "startDate": "2021",
+            "endDate": "2024",
+            "summary": "Sviluppo di interfacce web responsive e architetture micro-frontend per soluzioni di cybersecurity avanzata e gestione logistica.",
+            "highlights": [
+                "Sviluppo da zero di una piattaforma micro-frontend basata su Single-SPA e Angular per la gestione della logistica e del magazzino dei device",
+                "Progetto Security Dashboard: sviluppo di una piattaforma in tempo reale per il monitoraggio dello stato di sicurezza, eventi malevoli e vulnerabilità aziendali (React, TanStack Query, JavaScript, Bootstrap, C# , Python)",
+                "Progetto Marketplace Puntocyber: realizzazione del marketplace per l'erogazione di servizi di cybersecurity a protezione di dati e sistemi (React, Next.js, TanStack Query, JavaScript, Bootstrap)"
+            ]
+        },
+        {
+            "name": "Loverprint di Giacomo Schinco",
+            "position": "Titolare / Event Manager",
+            "startDate": "2019",
+            "endDate": "2021",
+            "summary": "Pianificazione e organizzazione di eventi ed esperienze personalizzate.",
+            "highlights": [
+                "Pianificazione dettagliata degli aspetti logistici, operativi e delle tempistiche relative a ciascun evento",
+                "Individuazione, negoziazione e coordinamento dei fornitori per la fornitura di prodotti e servizi"
+            ]
+        },
+        {
+            "name": "Schinco Parquet S.r.l.",
+            "position": "Responsabile Commerciale & Product Designer",
+            "startDate": "2014",
+            "endDate": "2019",
+            "summary": "Progettazione di prodotto, analisi di mercato e gestione delle attività commerciali.",
+            "highlights": [
+                "Ideazione, progettazione e deposito del brevetto d'invenzione industriale Woodencarpet (n. IT 102012902068013)",
+                "Analisi delle preferenze dei clienti, trend di mercato e performance delle campagne di prodotto",
+                "Coordinamento e formazione del personale addetto alle vendite, acquisizione e fidelizzazione dei clienti",
+                "Organizzazione, allestimento e gestione degli stand espositivi presso London Design Fair (2016) e MADE Expo Milano (2017)"
+            ]
+        }
+    ],
+    "education": [
+        {
+            "institution": "Accademia Informatica",
+            "years": "2026",
+            "area": "Programmatore Informatico (Full Stack Java)",
+            "studyType": "Corso di Qualificazione Professionale (EQF 5)",
+            "score": "Qualifica Regionale (K1.12)",
+            "description": "Formazione avanzata su architetture software Full Stack, orientata allo sviluppo d'impresa e alla gestione del ciclo di vita del software.",
+            "courses": [
+                "Backend & Architettura: Java (OOP), Spring Boot, Spring MVC, API RESTful, Design Patterns, JDBC",
+                "Database & Data Modeling: Progettazione ER, Normalizzazione, SQL, DBMS (MySQL, Oracle)",
+                "Frontend & UI: Angular, JavaScript, HTML5, CSS3, UX/Universal Design"
+            ]
+        },
+        {
+            "institution": "EPICODE SCHOOL",
+            "years": "2021",
+            "area": "Front-end Developer",
+            "studyType": "Corso di Formazione Intensivo",
+            "description": "Percorso pratico e immersivo focalizzato sullo sviluppo web moderno, architetture client-side e metodologie di lavoro pratiche.",
+            "courses": [
+                "Core Web Technologies: HTML5, CSS3, JavaScript (ES6+), manipolazione DOM",
+                "Framework & UI Libraries: React, jQuery, Bootstrap per interfacce responsive",
+                "Sviluppo Applicativo: Live-coding guidato, esercitazioni pratiche e progetti settimanali"
+            ]
+        }
+    ],
+    "skills": [
+        {
+            "name": "Linguaggi & Framework",
+            "keywords": [
+                "JavaScript",
+                "TypeScript",
+                "Java",
+                "Python (Basi)",
+                "C# (Basi)",
+                "React",
+                "Next.js",
+                "Angular",
+                "Single-SPA"
+            ]
+        },
+        {
+            "name": "Librerie & Strumenti",
+            "keywords": [
+                "TanStack Query",
+                "Tailwind",
+                "Zustand",
+                "Git",
+                "GitLab",
+                "GitHub",
+                "Docker (Basi)"
+            ]
+        },
+        {
+            "name": "Product & Management",
+            "keywords": [
+                "Scrum / Agile",
+                "Jira",
+                "Confluence",
+                "Gestione Backlog",
+                "Stakeholder Management"
+            ]
+        },
+        {
+            "name": "Soft Skills",
+            "keywords": [
+                "Problem Solving",
+                "Spirito di squadra",
+                "Adattabilità",
+                "Flessibilità nell'apprendimento",
+                "Autonomia nello studio di nuove tecnologie"
+            ]
+        }
+    ],
+    "skillsCompact": [
+        {
+            "name": "Product & Delivery",
+            "keywords": [
+                "Scrum / Agile",
+                "Product Ownership",
+                "Gestione Backlog",
+                "Stakeholder Management",
+                "Jira",
+                "Confluence"
+            ]
+        },
+        {
+            "name": "Stack tecnico",
+            "keywords": [
+                "TypeScript / JavaScript",
+                "React",
+                "Next.js",
+                "Angular",
+                "Java",
+                "Spring Boot",
+                "REST API",
+                "SQL (MySQL, Oracle)"
+            ]
+        },
+        {
+            "name": "Strumenti & Design",
+            "keywords": [
+                "Git",
+                "Docker",
+                "CI/CD",
+                "UX / Responsive & Universal Design"
+            ]
+        }
+    ],
+   "projects": [
+    {
+      "name": "Woodencarpet",
+      "summary": "Ideatore e titolare del brevetto d'invenzione industriale (n. IT 102012902068013, depositato presso UIBM). Un prodotto innovativo che ha coniugato design, ingegnerizzazione dei materiali e sviluppo commerciale, presentato a fiere internazionali come London Design Fair (2016) e MADE Expo Milano (2017).",
+      "highlights": [
+        "Progettazione concettuale, prototyping e registrazione del brevetto presso l'UIBM",
+        "Sviluppo del modello di business e gestione della catena di fornitura",
+        "Presentazione e networking in fiere internazionali di design e architettura"
+      ]
+    }
+  ]
+}
