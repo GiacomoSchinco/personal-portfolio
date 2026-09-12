@@ -395,3 +395,69 @@ E **in ogni componente generato** cambiare `import { cn } from "cn"` in
 `import { cn } from "@/lib/utils"`, altrimenti la build fallisce.
 </details>
 
+---
+
+## 9. Base UI: avviso `nativeButton` quando un bottone è un link
+
+### Sintomo
+
+```text
+Base UI: A component that acts as a button expected a native <button> because
+the `nativeButton` prop is true. Rendering a non-<button> removes native button
+semantics, which can impact forms and accessibility. Use a real <button> in the
+`render` prop, or set `nativeButton` to `false`.
+    at Button (button.tsx:49:5)
+    at Hero (Hero.tsx:107:13)
+```
+
+### Causa
+
+I componenti shadcn di questo progetto usano lo stile **base-nova**, costruito su
+**Base UI** e non su Radix.
+
+Base UI imposta `nativeButton` a `true` di default. Se passi `render={<a />}`,
+l'elemento non è più un `<button>`: perde le semantiche native (invio form,
+attivazione da tastiera, ruolo per gli screen reader) e Base UI avvisa in console.
+
+### Soluzione
+
+Usa il wrapper **`src/components/ButtonLink.tsx`**, che imposta
+`nativeButton={false}` e gestisce anche i link esterni (`target` + `rel`):
+
+```tsx
+import { ButtonLink } from "@/components/ButtonLink"
+
+<ButtonLink href="#projects">Guarda i progetti</ButtonLink>
+<ButtonLink href="https://github.com/..." external>Repository</ButtonLink>
+```
+
+Se ti serve un altro tipo di elemento (non un link), passa `nativeButton={false}`
+a mano:
+
+```tsx
+<Button nativeButton={false} render={<span />}>…</Button>
+```
+
+### ❌ Da non fare
+
+```tsx
+// Avviso in console a ogni render
+<Button render={<a href="#projects" />}>Guarda i progetti</Button>
+```
+
+### ⚠️ Non "risolvere" con `asChild`
+
+```tsx
+<Button asChild>…</Button>
+```
+
+`asChild` **non esiste** in Base UI: è l'API di Radix. La sostituta è la prop
+`render`. Lo stesso vale per Dialog, Sheet, Menu e tutti gli altri componenti
+`ui/` di questo progetto.
+
+### Regola generale
+
+Ogni volta che passi `render` a un componente Base UI, chiediti se l'elemento
+finale ha ancora il ruolo semantico atteso. Se no, dichiaralo con
+`nativeButton={false}`.
+

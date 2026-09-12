@@ -10,4 +10,8 @@ export default defineConfig({
       "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
+  server: {
+    host: true, // Espone il server alla rete locale
+    port: 5173,
+  },
 })
