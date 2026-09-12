@@ -4,7 +4,7 @@ export type Project = {
   slug: string
   title: string
   description: string
-  /** Anno di realizzazione, mostrato come etichetta. */
+  /** Periodo in cui è stato realizzato (il CV non indica l'anno del singolo progetto). */
   year: string
   role: string
   tags: string[]
@@ -17,79 +17,63 @@ export type Project = {
 }
 
 /**
- * Progetti del portfolio.
- * ⚠️ PLACEHOLDER: titoli e descrizioni sono inventati. Non essendoci immagini,
- * la card mostra un gradiente brand basato su `accent`.
+ * Progetti.
+ *
+ * I primi tre sono progetti software reali ricavati dai punti di Duskrise in
+ * `src/data/resume.json`; il quarto è un prodotto fisico brevettato e non ha
+ * nulla a che vedere con lo sviluppo — è qui perché racconta comunque come
+ * lavoro (design, ingegnerizzazione, business).
+ *
+ * ⚠️ Nessun progetto ha link pubblici: sono lavori per clienti/azienda, quindi
+ * le card non sono cliccabili. Se hai un case study o un repo pubblico,
+ * aggiungi `href` o `repo` e la card diventa un link da sola.
  */
 export const projects: Project[] = [
   {
-    slug: "aurora-design-system",
-    title: "Aurora Design System",
+    slug: "security-dashboard",
+    title: "Security Dashboard",
     description:
-      "Design system a tema scuro con 60+ componenti accessibili, token di colore in OKLCH e documentazione Storybook. Adottato da tre team di prodotto.",
-    year: "2026",
-    role: "Lead frontend",
-    tags: ["React", "TypeScript", "Design tokens", "Storybook"],
-    href: "https://example.com",
-    repo: "https://github.com/giacomo",
+      "Piattaforma in tempo reale per il monitoraggio dello stato di sicurezza, degli eventi malevoli e delle vulnerabilità aziendali.",
+    year: "2021 — 2024",
+    role: "Frontend Developer",
+    tags: ["React", "TanStack Query", "JavaScript", "Bootstrap", "C#", "Python"],
     featured: true,
     accent: "primary",
   },
   {
-    slug: "atlante-data-viz",
-    title: "Atlante",
+    slug: "piattaforma-micro-frontend",
+    title: "Piattaforma logistica micro-frontend",
     description:
-      "Dashboard di data visualization per dati geografici: 50.000 punti renderizzati a 60 fps grazie a canvas e Web Workers.",
-    year: "2025",
-    role: "Frontend developer",
-    tags: ["Three.js", "WebGL", "Canvas", "Web Workers"],
-    href: "https://example.com",
+      "Sviluppata da zero: architettura a micro-frontend per la gestione della logistica e del magazzino dei device aziendali.",
+    year: "2021 — 2024",
+    role: "Frontend Developer",
+    tags: ["Single-SPA", "Angular", "Micro-frontend", "Architettura"],
     featured: true,
-    accent: "secondary",
-  },
-  {
-    slug: "metrica-storefront",
-    title: "Metrica Storefront",
-    description:
-      "E-commerce headless con checkout in tre passaggi. LCP sceso da 4,1 s a 1,2 s e conversione +23%.",
-    year: "2025",
-    role: "Frontend developer",
-    tags: ["Next.js", "Performance", "Stripe"],
-    repo: "https://github.com/giacomo",
     accent: "tertiary",
   },
   {
-    slug: "vega-portfolio-engine",
-    title: "Vega",
+    slug: "marketplace-puntocyber",
+    title: "Marketplace Puntocyber",
     description:
-      "Generatore di portfolio statici: si scrive un file di configurazione, lui produce un sito ottimizzato e accessibile.",
-    year: "2024",
-    role: "Side project",
-    tags: ["Vite", "Node", "CLI", "Open source"],
-    repo: "https://github.com/giacomo",
+      "Marketplace per l'erogazione di servizi di cybersecurity a protezione di dati e sistemi.",
+    year: "2021 — 2024",
+    role: "Frontend Developer",
+    tags: ["React", "Next.js", "TanStack Query", "JavaScript", "Bootstrap"],
+    accent: "secondary",
+  },
+  {
+    slug: "woodencarpet",
+    title: "Woodencarpet",
+    description:
+      "Prodotto brevettato che coniuga design, ingegnerizzazione dei materiali e sviluppo commerciale. Presentato a London Design Fair (2016) e MADE Expo Milano (2017).",
+    year: "2014 — 2019",
+    role: "Ideatore e titolare del brevetto",
+    tags: [
+      "Design di prodotto",
+      "Brevetti",
+      "Business development",
+      "Fiere internazionali",
+    ],
     accent: "primary",
-  },
-  {
-    slug: "kanso-ui",
-    title: "Kanso UI",
-    description:
-      "Libreria di componenti minimal ispirata a iOS: vetro smerigliato, gesture e transizioni fluide. 1.200 stelle su GitHub.",
-    year: "2024",
-    role: "Autore",
-    tags: ["React", "Glassmorphism", "Animazioni"],
-    href: "https://example.com",
-    repo: "https://github.com/giacomo",
-    accent: "secondary",
-  },
-  {
-    slug: "solaris-campaign",
-    title: "Solaris",
-    description:
-      "Landing page per il lancio di un prodotto con scena 3D interattiva. 120.000 visite nel primo mese.",
-    year: "2023",
-    role: "Frontend & motion",
-    tags: ["GSAP", "Three.js", "ScrollTrigger"],
-    href: "https://example.com",
-    accent: "tertiary",
   },
 ]

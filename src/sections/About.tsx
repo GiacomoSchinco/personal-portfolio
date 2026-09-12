@@ -17,10 +17,27 @@ export function About() {
       <div className="relative grid gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
         {/* Colonna testo */}
         <div>
+          {/* Avatar: immagine importata da src/assets, non da public/ */}
+          <div className="mb-8 flex items-center gap-4">
+            <img
+              src={site.avatarUrl}
+              alt={site.fullName}
+              width={56}
+              height={56}
+              className="h-14 w-14 shrink-0 rounded-full border border-glass-border object-cover"
+            />
+            <div>
+              <p className="text-base font-medium text-foreground">
+                {site.fullName}
+              </p>
+              <p className="text-sm text-muted-foreground">{site.role}</p>
+            </div>
+          </div>
+
           <SectionHeading eyebrow={about.eyebrow} title={about.title} />
 
           <div className="mt-8 flex flex-col gap-5">
-            {about.paragraphs.map((paragraph) => (
+            {about.paragraphs.map((paragraph:any) => (
               <p
                 key={paragraph.slice(0, 32)}
                 className="text-base leading-relaxed text-muted-foreground"
@@ -52,7 +69,7 @@ export function About() {
           </h3>
 
           <dl className="mt-6 flex flex-col gap-6">
-            {about.stats.map((stat) => (
+            {about.stats.map((stat:any) => (
               <div key={stat.label} className="flex items-center gap-4">
                 <IconTile icon={stat.icon} size="md" />
                 <div>

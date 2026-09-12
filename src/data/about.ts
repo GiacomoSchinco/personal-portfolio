@@ -1,4 +1,4 @@
-import { Briefcase, Rocket, Sparkles } from "lucide-react"
+import { Award, Briefcase, Layers } from "lucide-react"
 import type { IconType } from "@/lib/icons"
 
 export type Stat = {
@@ -9,18 +9,19 @@ export type Stat = {
 
 /**
  * Contenuti della sezione "Chi sono".
- * ⚠️ PLACEHOLDER: la bio è inventata, sostituiscila con la tua.
+ * Fonte: `src/data/resume.json` (il CV completo).
  */
 export const about = {
   eyebrow: "Chi sono",
-  title: "Frontend developer con l'ossessione del dettaglio",
+  title: "Capisco il prodotto, poi lo costruisco",
   paragraphs: [
-    "Mi chiamo Giacomo e da oltre cinque anni trasformo design in interfacce che le persone usano volentieri. Lavoro principalmente con React e TypeScript, ma la parte che mi appassiona di più è il punto in cui l'animazione smette di essere decorazione e diventa comunicazione.",
-    "Ho un approccio maniacale all'accessibilità e alle performance: un sito bello ma lento o inutilizzabile da tastiera è, per me, un lavoro fatto a metà. Quando non scrivo codice mi perdo tra tipografia, palette di colori e package manager.",
+    "Ho una sola grande qualità: la determinazione. Una volta fissato un obiettivo lo seguo nonostante le difficoltà che incontro. Il fallire non è sbagliato — smettere di tentare, sì.",
+    "Negli ultimi anni mi sono mosso tra due mondi che di solito non si parlano. Ho scritto interfacce in React e Angular per piattaforme di cybersecurity e logistica, e ho fatto il Product Owner gestendo backlog e stakeholder con Scrum. È da questa doppia prospettiva che nasce il mio modo di lavorare: prima capire perché una cosa serve, poi decidere come costruirla.",
+    "Ho iniziato molto lontano dal codice, progettando prodotto e gestendo clienti. Non è stato tempo perso: è la ragione per cui oggi non mi limito a implementare quello che mi viene chiesto.",
   ],
   stats: [
-    { icon: Briefcase, value: "5+", label: "Anni di esperienza" },
-    { icon: Rocket, value: "30+", label: "Progetti consegnati" },
-    { icon: Sparkles, value: "12", label: "Tecnologie padroneggiate" },
+    { icon: Briefcase, value: "11", label: "Anni di esperienza professionale" },
+    { icon: Layers, value: "3", label: "Piattaforme software realizzate" },
+    { icon: Award, value: "1", label: "Brevetto industriale depositato" },
   ] satisfies Stat[],
 }

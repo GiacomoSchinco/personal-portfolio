@@ -10,8 +10,8 @@ export type { SkillGroup } from "./skills"
 export { projects } from "./projects"
 export type { Project } from "./projects"
 
-export { experiences } from "./experience"
-export type { ExperienceItem } from "./experience"
+export { experienceGroups } from "./experience"
+export type { ExperienceItem, ExperienceGroup } from "./experience"
 
 // I tipi di stile vivono in `@/lib`: i componenti non devono dipendere da `@/data`.
 export { accentClasses } from "@/lib/accents"
