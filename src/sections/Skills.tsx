@@ -7,7 +7,7 @@ import {
 import { skillGroups } from "@/data"
 
 /** Adatta i gruppi di competenze al formato richiesto dal carosello. */
-const cards: CarouselCardData[] = skillGroups.map((group, index) => ({
+const cards: CarouselCardData[] = skillGroups.map((group:any, index:any) => ({
   id: group.title,
   subtitle: `${String(index + 1).padStart(2, "0")} / ${String(skillGroups.length).padStart(2, "0")}`,
   title: group.title,
