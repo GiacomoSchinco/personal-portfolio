@@ -1,9 +1,12 @@
 # React + TypeScript + Vite
 
 > [!IMPORTANT]
-> Prima di installare/aggiornare dipendenze leggi **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)**.
-> Contiene i pin di versione obbligatori (React `~19.2.8`) e la procedura di recupero se si
-> cancella `node_modules`.
+> **Non aggiornare React.** `react` e `react-dom` sono fissati a `~19.2.8` (tilde, non caret)
+> perché `@react-three/fiber@9` richiede `>=19 <19.3`. Con `^` npm installerebbe la 19.3.0
+> e l'install fallirebbe con `ERESOLVE`.
+>
+> Vale anche per `@types/react` e `@types/react-dom`, fissati a `~19.2.18` e `~19.2.7`.
+> Evita `--legacy-peer-deps` e `--force`: nascondono il problema invece di risolverlo.
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 

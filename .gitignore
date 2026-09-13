@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Documentazione interna — non va pubblicata su GitHub
+AGENTS.md
+TROUBLESHOOTING.md

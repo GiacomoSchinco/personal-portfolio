@@ -3,7 +3,7 @@ import { ArrowRight, ArrowUpRight, Download, MapPin } from "lucide-react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ButtonLink } from "@/components/custom/ButtonLink"
-import { MeshGradient } from "@/components/three/MeshGradient"
+import { StarfieldBackground } from "@/components/three/StarfieldBackground"
 import { site } from "@/data"
 
 export function Hero() {
@@ -40,25 +40,17 @@ export function Hero() {
       id="top"
       className="relative flex min-h-screen w-full items-center overflow-hidden"
     >
-      {/*
-        Sfondo aurora.
-        I colori sono esadecimali perché WebGL non legge le variabili CSS:
-        sono le conversioni approssimate dei brand token (blu, viola, ciano)
-        più il colore base scuro.
-      */}
+      {/* Sfondo: campo stellato */}
       <div className="absolute inset-0 z-0">
-        <MeshGradient
-          color1="#3b5bff"
-          color2="#0a0a16"
-          color3="#8b5cf6"
-          color4="#22d3ee"
-          speed={0.6}
-          softness={0.5}
-        />
+        <StarfieldBackground count={2000} />
       </div>
 
-      {/* Velo: scurisce lo sfondo e lo fonde nella sezione successiva */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-background/45 via-background/60 to-background" />
+      {/*
+        Velo: con il MeshGradient serviva a scurire un fondo chiaro e rendere
+        leggibile il testo. Con il campo stellato lo sfondo è già scuro, quindi
+        il velo resta solo in basso per fondere la Hero nella sezione successiva.
+      */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-transparent via-transparent to-background" />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-32 pb-24">
         <div className="max-w-3xl">
