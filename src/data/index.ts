@@ -2,7 +2,7 @@ export { site, navLinks, socials } from "./site"
 export type { NavLink, Social } from "./site"
 
 export { about } from "./about"
-export type { Stat } from "./about"
+export type { MethodPoint, Stat } from "./about"
 
 export { skillGroups } from "./skills"
 export type { SkillGroup } from "./skills"

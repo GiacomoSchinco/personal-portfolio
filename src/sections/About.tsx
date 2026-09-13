@@ -11,12 +11,25 @@ import { about, site, socials } from "@/data"
 export function About() {
   return (
     <Section id="about">
-      {/* Alone accent: dà profondità e qualcosa da sfocare alla card in vetro */}
-      <SectionGlow accent="primary" className="top-1/4 -left-32" />
+      {/*
+        L'alone sta DIETRO la card, non dietro la colonna di testo.
+        Due motivi:
+        1. Il `glass-panel` della card sfoca ciò che ha dietro: su sfondo piatto
+           il vetro non si vede. L'alone gli dà qualcosa da sfocare.
+        2. A sinistra caricava di colore un solo lato, facendo sembrare la
+           sezione fuori centro anche se il layout è simmetrico.
+        Resta dentro la sezione (niente offset negativi): gli offset negativi
+        allargano il documento e su mobile il browser ricentra tutto il layout.
+      */}
+      <SectionGlow accent="primary" className="top-1/3 right-0" />
 
       <div className="relative grid gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
-        {/* Colonna testo */}
-        <div>
+        {/* Colonna testo.
+            `min-w-0` su entrambe le colonne: un elemento di griglia ha
+            `min-width: auto`, quindi non si restringe sotto il contenuto minimo.
+            Senza, una stringa lunga e senza spazi (l'email negli handle social)
+            allarga la colonna oltre il contenitore e il contenuto sborda. */}
+        <div className="min-w-0">
           {/* Avatar: immagine importata da src/assets, non da public/ */}
           <div className="mb-8 flex items-center gap-4">
             <img
@@ -37,7 +50,7 @@ export function About() {
           <SectionHeading eyebrow={about.eyebrow} title={about.title} />
 
           <div className="mt-8 flex flex-col gap-5">
-            {about.paragraphs.map((paragraph:any) => (
+            {about.paragraphs.map((paragraph) => (
               <p
                 key={paragraph.slice(0, 32)}
                 className="text-base leading-relaxed text-muted-foreground"
@@ -62,35 +75,37 @@ export function About() {
           </div>
         </div>
 
-        {/* Colonna card in vetro */}
-        <SurfaceCard variant="glass" glow className="h-fit p-6 md:p-8">
-          <h3>
-            <MicroLabel>In numeri</MicroLabel>
-          </h3>
+        {/* Colonna destra: card in vetro + metodo */}
+        <div className="flex min-w-0 flex-col gap-6">
+          <SurfaceCard variant="glass" glow className="p-6 md:p-8">
+            <h3>
+              <MicroLabel>In numeri</MicroLabel>
+            </h3>
 
-          <dl className="mt-6 flex flex-col gap-6">
-            {about.stats.map((stat:any) => (
-              <div key={stat.label} className="flex items-center gap-4">
-                <IconTile icon={stat.icon} size="md" />
-                <div>
-                  <dt className="text-2xl font-medium tracking-tight text-foreground">
-                    {stat.value}
-                  </dt>
-                  <dd className="text-sm text-muted-foreground">{stat.label}</dd>
+            <dl className="mt-6 flex flex-col gap-6">
+              {about.stats.map((stat) => (
+                <div key={stat.label} className="flex items-center gap-4">
+                  <IconTile icon={stat.icon} size="md" />
+                  <div>
+                    <dt className="text-2xl font-medium tracking-tight text-foreground">
+                      {stat.value}
+                    </dt>
+                    <dd className="text-sm text-muted-foreground">
+                      {stat.label}
+                    </dd>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </dl>
+              ))}
+            </dl>
 
-          <div className="my-7 h-px w-full bg-glass-border" />
+            <div className="my-7 h-px w-full bg-glass-border" />
 
-          <h3>
-            <MicroLabel>Dove trovarmi</MicroLabel>
-          </h3>
+            <h3>
+              <MicroLabel>Dove trovarmi</MicroLabel>
+            </h3>
 
-          <ul className="mt-4 flex flex-col gap-1">
-            {socials.map((social) => {
-              return (
+            <ul className="mt-4 flex flex-col gap-1">
+              {socials.map((social) => (
                 <li key={social.label}>
                   <a
                     href={social.href}
@@ -104,7 +119,7 @@ export function About() {
                       className="text-accent-tertiary"
                     />
                     <span className="font-medium">{social.label}</span>
-                    <span className="ml-auto text-xs text-brand-text-muted">
+                    <span className="ml-auto truncate text-xs text-brand-text-muted">
                       {social.handle}
                     </span>
                     <ArrowUpRight
@@ -113,10 +128,38 @@ export function About() {
                     />
                   </a>
                 </li>
-              )
-            })}
-          </ul>
-        </SurfaceCard>
+              ))}
+            </ul>
+          </SurfaceCard>
+
+          {/*
+            Metodo: come usa l'AI.
+            Card "flat" (senza blur) di proposito: in quest'area c'è già una
+            superficie in vetro e non serve accumularne altre — vedi AGENTS.md §5.3.
+          */}
+          <SurfaceCard className="p-6 md:p-8">
+            <h3>
+              <MicroLabel tone="accent">{about.method.title}</MicroLabel>
+            </h3>
+
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              {about.method.intro}
+            </p>
+
+            <ul className="mt-6 flex flex-col gap-5">
+              {about.method.points.map((point) => (
+                <li key={point.lead}>
+                  <p className="text-sm font-medium text-foreground">
+                    {point.lead}
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    {point.text}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </SurfaceCard>
+        </div>
       </div>
     </Section>
   )

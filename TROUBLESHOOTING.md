@@ -461,3 +461,77 @@ Ogni volta che passi `render` a un componente Base UI, chiediti se l'elemento
 finale ha ancora il ruolo semantico atteso. Se no, dichiaralo con
 `nativeButton={false}`.
 
+---
+
+## 10. Una sezione non è centrata su mobile (sborda a destra)
+
+### Sintomo
+
+Su mobile la sezione "Chi sono" non è centrata: il margine sinistro c'è, quello
+destro è mangiato. Le altre sezioni sono a posto. La pagina **non** scorre in
+orizzontale, quindi non sembra un problema di overflow.
+
+### Causa
+
+In CSS Grid (e Flexbox) un elemento ha `min-width: auto`, che significa
+**"non posso restringermi sotto la mia larghezza minima di contenuto"**.
+
+In "Chi sono" la card dei social mostra l'handle, e quello dell'email è
+`giacomoschinco87@gmail.com`: una stringa **senza spazi**, dentro una riga
+`flex` **senza `flex-wrap`**. Quella riga non può restringersi.
+
+```
+icona + "Email" + email + freccia   ≈ 299px
++ px-3 del link                     + 24px
++ p-6 della card                    + 48px
+= minimo richiesto                  ≈ 371px     ← la colonna si allarga a questo
+disponibile su un telefono da 375px  327px      ← 375 − 48 (px-6 di Section)
+```
+
+La griglia si allarga oltre il contenitore e il contenuto sborda **a destra**.
+`overflow-x-clip` sul wrapper (vedi sotto) taglia l'eccesso, quindi non compare
+la barra di scorrimento: l'unico sintomo visibile è la sezione "spostata".
+
+Prova a commentare quella regola: la barra orizzontale ricompare.
+
+### Soluzione
+
+```tsx
+// Sulle colonne della griglia: permette di restringersi sotto il min-content
+<div className="min-w-0">
+
+// Sull'handle: taglia con i puntini invece di allargare
+<span className="ml-auto truncate text-xs text-brand-text-muted">
+```
+
+`truncate` da solo basterebbe (imposta `overflow: hidden`, e per un flex item
+`overflow` non-visible fa risolvere `min-width: auto` a `0`), ma `min-w-0` sulle
+colonne protegge anche da futuri contenuti lunghi.
+
+### ⚠️ La trappola che rende il bug difficile da trovare
+
+`overflow-x: clip` sul wrapper di `App.tsx` **nasconde il sintomo**: senza,
+comparirebbe una barra di scorrimento orizzontale e capiresti subito dove
+guardare. Con la guardia attiva vedi solo un layout "storto".
+
+Quando una sezione sembra fuori centro, il primo sospetto **non** è la
+centratura: è un elemento che sborda. Verifica con:
+
+```js
+[...document.querySelectorAll("*")]
+  .filter((el) => {
+    const r = el.getBoundingClientRect()
+    return r.right > innerWidth + 1 || r.left < -1
+  })
+  .map((el) => `${el.tagName}.${el.className}`)
+```
+
+### Nota su `overflow-x-clip`
+
+Serve comunque, per gli aloni decorativi che sporgono di proposito (`SectionGlow`).
+Si usa `clip` e **non** `hidden`: `overflow-x: hidden` + `overflow-y: visible`
+viene forzato dal browser ad `auto`, crea un contenitore di scroll e rompe scroll
+fluido e `position: sticky`. Inoltre `overflow` **non** taglia i discendenti
+`position: fixed`, che quindi vanno gestiti a parte (`MobileMenu` ha il suo
+`overflow-hidden`).
+

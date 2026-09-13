@@ -75,7 +75,7 @@ export function MobileMenu({ open, onClose, links }: MobileMenuProps) {
   return (
     <div
       ref={menuRef}
-      className="fixed inset-0 z-[60] bg-background md:hidden"
+      className="fixed inset-0 z-[60] overflow-hidden bg-background md:hidden"
       style={{ clipPath: "circle(150% at 100% 0%)" }}
     >
       {/* Sfondo brand: base + aloni accent (palette "Aurora notturna") */}
