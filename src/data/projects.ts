@@ -47,7 +47,7 @@ export const projects: Project[] = [
       "Sviluppata da zero: architettura a micro-frontend per la gestione della logistica e del magazzino dei device aziendali.",
     year: "2021 — 2024",
     role: "Frontend Developer",
-    tags: ["Single-SPA", "Angular", "Micro-frontend", "Architettura"],
+    tags: ["Single-SPA", "Angular", "Micro-frontend", "Architettura", "PrimeNG"],
     featured: true,
     accent: "tertiary",
   },
@@ -58,7 +58,7 @@ export const projects: Project[] = [
       "Marketplace per l'erogazione di servizi di cybersecurity a protezione di dati e sistemi.",
     year: "2021 — 2024",
     role: "Frontend Developer",
-    tags: ["React", "Next.js", "TanStack Query", "JavaScript", "Bootstrap"],
+    tags: ["React", "Next.js", "TanStack Query", "JavaScript", "Tailwind CSS"],
     accent: "secondary",
   },
   {

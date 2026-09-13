@@ -56,17 +56,23 @@ export const navLinks: NavLink[] = [
  * Link social.
  * Le icone di brand (GitHub, LinkedIn) sono in `src/components/custom/BrandIcons.tsx`
  * perché lucide v1 non le include più.
+ *
+ * ⚠️ `handle` è solo testo da mostrare: è lo slug reale del profilo, non una
+ * versione abbreviata. Non "pulirlo" in `in/giacomo-schinco` — sarebbe un
+ * indirizzo che non esiste. La riga che lo contiene ha `truncate` proprio
+ * perché uno slug LinkedIn può essere lungo. Stesso discorso per `@GiacomoSchinco`:
+ * l'utente GitHub è case-insensitive, ma si scrive con le maiuscole reali.
  */
 export const socials: Social[] = [
   {
     label: "GitHub",
-    handle: "@giacomo",
-    href: "https://github.com/giacomo",
+    handle: "@GiacomoSchinco",
+    href: "https://github.com/GiacomoSchinco",
   },
   {
     label: "LinkedIn",
-    handle: "in/giacomo",
-    href: "https://linkedin.com/in/giacomo",
+    handle: "in/giacomo-schinco-08416b1ba",
+    href: "https://www.linkedin.com/in/giacomo-schinco-08416b1ba",
   },
   {
     label: "Email",

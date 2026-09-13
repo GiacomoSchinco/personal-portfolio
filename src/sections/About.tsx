@@ -132,33 +132,7 @@ export function About() {
             </ul>
           </SurfaceCard>
 
-          {/*
-            Metodo: come usa l'AI.
-            Card "flat" (senza blur) di proposito: in quest'area c'è già una
-            superficie in vetro e non serve accumularne altre — vedi AGENTS.md §5.3.
-          */}
-          <SurfaceCard className="p-6 md:p-8">
-            <h3>
-              <MicroLabel tone="accent">{about.method.title}</MicroLabel>
-            </h3>
-
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              {about.method.intro}
-            </p>
-
-            <ul className="mt-6 flex flex-col gap-5">
-              {about.method.points.map((point) => (
-                <li key={point.lead}>
-                  <p className="text-sm font-medium text-foreground">
-                    {point.lead}
-                  </p>
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                    {point.text}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </SurfaceCard>
+         
         </div>
       </div>
     </Section>

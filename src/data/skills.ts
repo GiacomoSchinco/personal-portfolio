@@ -18,6 +18,13 @@ export type SkillGroup = {
   skills: string[]
 }
 
+export type MethodPoint = {
+  /** Prima frase, evidenziata. */
+  lead: string
+  /** Spiegazione. */
+  text: string
+}
+
 /**
  * Gruppi di competenze mostrati come card del carosello.
  *
@@ -129,3 +136,38 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
 ]
+
+/**
+ * Come uso l'AI nel lavoro — la card "Metodo" della sezione Competenze.
+ *
+ * ⚠️ Questa formulazione è stata confermata dal committente e NON viene dal CV.
+ * È la descrizione di un metodo, non una competenza: non va spostata dentro
+ * `skillGroups` (romperebbe il criterio "una card = una famiglia di cose").
+ *
+ * Nota: NON si elencano gli strumenti (Copilot, modelli locali…). Il punto non
+ * è quali tool usa — è come li usa. Un elenco di nomi sarebbe la solita lista
+ * di loghi che non dice niente.
+ *
+ * ⚠️ Vincolo di scrittura: il titolo e OGNI punto devono nominare l'AI.
+ * Senza il riferimento esplicito, frasi come "il giudizio resta mio" si leggono
+ * come metodo di lavoro generico invece che come uso dell'AI.
+ */
+export const method = {
+  title: "Come uso l'AI",
+  intro:
+    "Nel 2026 non usarla sarebbe anacronistico. La differenza non è se la usi: è cosa non le deleghi.",
+  points: [
+    {
+      lead: "Consulente tecnico, prima del codice.",
+      text: "La interrogo per studiare le tecnologie, analizzare i requisiti, progettare il database e dividere il lavoro. Quando apro l'editor ho già un piano preciso: non improvviso.",
+    },
+    {
+      lead: "Operatore, ma solo sul ripetitivo.",
+      text: "Ripetizioni, boilerplate, trasformazioni: quelle le lascio alla macchina. Mai ciò che richiede una decisione.",
+    },
+    {
+      lead: "Il giudizio resta mio.",
+      text: "Architettura, scelte tecniche e revisione finale. L'AI propone, io decido — e quello che esce porta la mia firma.",
+    },
+  ] satisfies MethodPoint[],
+}
