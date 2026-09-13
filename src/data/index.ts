@@ -8,7 +8,13 @@ export { method, skillGroups } from "./skills"
 export type { MethodPoint, SkillGroup } from "./skills"
 
 export { projects } from "./projects"
-export type { Project } from "./projects"
+export type {
+  Project,
+  ProjectDetails,
+  ProjectFact,
+  ProjectImage,
+  ProjectMedia,
+} from "./projects"
 
 export { experienceGroups } from "./experience"
 export type { ExperienceItem, ExperienceGroup } from "./experience"

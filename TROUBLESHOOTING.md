@@ -535,3 +535,126 @@ fluido e `position: sticky`. Inoltre `overflow` **non** taglia i discendenti
 `position: fixed`, che quindi vanno gestiti a parte (`MobileMenu` ha il suo
 `overflow-hidden`).
 
+### Le altre tre comparse dello stesso bug (13/09/2026)
+
+Il bug si è ripresentato **tre volte** in punti diversi. Vale la pena riconoscerlo
+perché la forma è sempre la stessa: un testo senza spazi dentro una riga `flex`
+o una griglia.
+
+**1. L'handle dell'email in "Chi sono"** — la prima, descritta sopra.
+
+**2. Il ruolo di Woodencarpet nella card Progetti.** `Ideatore e titolare del
+brevetto` stava in uno `<span>` con `whitespace-nowrap`, accanto a un `<h3>` in
+una riga `flex justify-between`. `nowrap` impedisce di restringersi, quindi lo
+span usciva di **14px** dalla riga — e siccome `SurfaceCard` ha `overflow-hidden`,
+veniva **tagliato** invece di andare a capo. Il sintomo era "il tag è tagliato".
+
+```tsx
+// ❌ non può restringersi, esce e viene tagliato
+<div className="flex items-start justify-between gap-4">
+  <span className="text-xs whitespace-nowrap">{project.role}</span>
+
+// ✅ se non ci sta, il ruolo va a capo sotto il titolo
+<div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1">
+  <span className="text-xs">{project.role}</span>
+```
+
+**3. Il numero di brevetto nei riquadri "In sintesi".** `IT 102012902068013` è un
+token unico, e la griglia dei riquadri era a **due colonne fisse**: sul telefono
+il modale è largo 326px, quindi ogni cella aveva **108px di testo** e il codice
+ne chiedeva 125. Usciva di 17px dal riquadro.
+
+```tsx
+// ❌ 108px di testo per cella su un telefono
+<dl className="grid grid-cols-2 gap-3">
+
+// ✅ una colonna sotto `sm`, e la cella può restringersi
+<dl className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+  <div className="min-w-0 …">
+    <dd className="… break-words">{fact.value}</dd>
+```
+
+### La lezione
+
+Tre bug diversi, tre sintomi diversi (sezione decentrata, tag tagliato, testo
+fuori dal riquadro), **una sola causa**: `min-width: auto`. In CSS Grid e Flexbox
+un elemento non si restringe sotto la sua larghezza minima di contenuto, e quella
+di un token senza spazi è la sua larghezza intera.
+
+Quando un testo "esce" da un contenitore, la domanda giusta non è sul testo:
+è **dove può andare a capo**. Se non può, va data una via d'uscita
+(`flex-wrap`, `min-w-0`, `break-words`) o più spazio (meno colonne).
+
+---
+
+## 11. Il modale non si stacca dalla pagina (overlay invisibile)
+
+### Sintomo
+
+Il dialog si apre e funziona, ma il pannello sembra un pezzo di layout invece
+di un livello sopra la pagina: dietro non si scurisce niente e il fondo resta
+perfettamente leggibile.
+
+### Causa
+
+`ui/dialog.tsx` è **generato da shadcn** e l'overlay è tarato sul tema chiaro:
+
+```tsx
+className="fixed inset-0 isolate z-50 bg-black/10 duration-100
+           supports-backdrop-filter:backdrop-blur-xs"
+```
+
+`bg-black/10` è il 10% di nero. Su un fondo bianco si vede benissimo; sul nostro
+`--brand-bg-base` (quasi nero) non cambia praticamente nulla, e il pannello
+(`--popover` → `--brand-bg-elevated`) resta a un passo di luminosità dal fondo.
+
+Questo vale per **tutti** i dialog del sito, non solo per quello dei Progetti.
+
+### Soluzione
+
+Override in `src/index.css`, **fuori da ogni `@layer`**:
+
+```css
+[data-slot="dialog-overlay"] {
+  background-color: oklch(0 0 0 / 0.65);
+  backdrop-filter: blur(8px) saturate(140%);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+}
+```
+
+Due scelte non casuali:
+
+- **Fuori dai layer.** In CSS le regole non a layer vincono su quelle a layer a
+  prescindere dalla specificità. Così battiamo la utility di Tailwind senza
+  `!important`.
+- **`data-slot`, non le classi.** È l'attributo stabile che shadcn mette su ogni
+  componente. Se rigeneri `ui/dialog.tsx` e cambiano le classi, l'override
+  continua a funzionare.
+
+### ❌ Da non fare
+
+Modificare `bg-black/10` dentro `ui/dialog.tsx`: è un file generato, la
+prossima rigenerazione cancella la modifica. Le personalizzazioni stanno in
+`index.css` (il punto di controllo unico del tema) o in un componente di
+`custom/`.
+
+### Corollario: `backdrop-filter` non prefissato sparisce in build
+
+In `dist/` le regole che dichiarano **entrambi** i prefissi
+(`backdrop-filter` e `-webkit-backdrop-filter`) escono **solo col prefisso
+webkit**. Verificato su `dist/assets/*.css`:
+
+```powershell
+$css = Get-Content dist\assets\*.css -Raw
+[regex]::Matches($css,'-webkit-backdrop-filter').Count   # 9
+[regex]::Matches($css,'(?<!-webkit-)backdrop-filter').Count # 7  ← solo le utility Tailwind
+```
+
+Riguarda anche `.glass-panel`, `.glass-nav` e `.glass-chip`, quindi **non** è
+introdotto dal modale: è il comportamento del minificatore, ed è preesistente.
+Conseguenza pratica: su Chrome/Safari/Edge il vetro funziona (supportano il
+prefisso), su Firefox l'effetto blur può non applicarsi — la traslucenza sì,
+perché è `background-color`.
+
+Da confermare su Firefox prima di intervenire; la correzione probabile è
+avvolgere in `@supports` invece di elencare i due prefissi.

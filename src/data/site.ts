@@ -22,13 +22,22 @@ export const site = {
   /** Nome breve mostrato nella navbar. */
   name: "Giacomo",
   fullName: "Giacomo Schinco",
-  role: "Developer & Product Owner",
+  role: "Software Developer & Product Manager", // Oppure semplicemente "Full Stack Developer"
   tagline:
-    "Sviluppo frontend e product ownership: traduco le esigenze di business in interfacce web che le persone usano davvero.",
+    "Dall'ideazione all'architettura software. Costruisco soluzioni web complete e trasformo visioni di business in prodotti digitali concreti.",
   email: "giacomoschinco87@gmail.com",
   location: "Roma, Italia",
-  /** true mostra il pallino "disponibile" nella navbar. */
-  available: true,
+  /**
+   * Stato di disponibilità. Compare in **due** punti del sito:
+   * - il badge in cima alla Hero (`data-hero-badge`);
+   * - la terza voce della lista in Contatti.
+   *
+   * ⚠️ Sono due di proposito. Conseguenza da tenere a mente: svuotare o
+   * togliere questo campo spegne **entrambi**. E se si toglie il badge dalla
+   * Hero, va tolto anche il tween `[data-hero-badge]` dal timeline GSAP in
+   * `Hero.tsx`, altrimenti resta un'animazione che cerca un elemento che
+   * non esiste più.
+   */
   availabilityLabel: "Disponibile per nuove opportunità",
   /** ⚠️ Il file non esiste ancora: `public/` contiene solo favicon e icone. */
   cvHref: "/cv.pdf",

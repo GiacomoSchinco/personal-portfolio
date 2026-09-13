@@ -1,6 +1,6 @@
 import { useState } from "react"
 import type { FormEvent } from "react"
-import { ArrowUpRight, Mail, MapPin, Send } from "lucide-react"
+import { ArrowUpRight, CircleCheck, Mail, MapPin, Send } from "lucide-react"
 import { toast } from "sonner"
 import { cn } from "cn"
 import { Section } from "@/components/custom/Section"
@@ -77,6 +77,14 @@ export function Contact() {
             <span className="inline-flex items-center gap-3 text-muted-foreground">
               <IconTile icon={MapPin} />
               {site.location}
+            </span>
+
+            {/* Terza voce della lista: non è un link né un luogo, è uno stato.
+                Sta qui e non nella Hero di proposito — il perché è nel commento
+                sopra `availabilityLabel` in `site.ts`. */}
+            <span className="inline-flex items-center gap-3 text-muted-foreground">
+              <IconTile icon={CircleCheck} />
+              {site.availabilityLabel}
             </span>
           </div>
 
