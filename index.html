@@ -19,17 +19,19 @@
 
       ⚠️ Due cose da non dimenticare quando si tocca questo blocco:
 
-      - `og:image` deve essere un URL **assoluto** (`https://dominio/og-image.jpg`).
-        Oggi è relativo perché il sito non è ancora online: LinkedIn e Facebook
-        scartano i percorsi relativi, quindi l'anteprima resterà senza immagine
-        finché non si mette l'indirizzo vero. Va aggiornato anche `og:url`.
+      - `og:image` e `og:url` devono essere URL **assoluti**: LinkedIn e
+        Facebook scartano i percorsi relativi. Se il dominio cambia (per
+        esempio con un dominio personalizzato) vanno aggiornati qui, nel
+        `<link rel="canonical">` sotto, e da nessun'altra parte.
       - `og:description` ripete `site.tagline` di `src/data/site.ts`: qui non si
         possono importare i dati, perché i crawler non eseguono JavaScript. Se
         cambia là, va cambiato anche qui.
     -->
+    <link rel="canonical" href="https://giacomoschinco.vercel.app/" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="it_IT" />
     <meta property="og:site_name" content="Giacomo Schinco" />
+    <meta property="og:url" content="https://giacomoschinco.vercel.app/" />
     <meta
       property="og:title"
       content="Giacomo Schinco — Software Developer &amp; Product Manager"
@@ -38,7 +40,10 @@
       property="og:description"
       content="Dall'ideazione all'architettura software. Costruisco soluzioni web complete e trasformo visioni di business in prodotti digitali concreti."
     />
-    <meta property="og:image" content="/og-image.jpg" />
+    <meta
+      property="og:image"
+      content="https://giacomoschinco.vercel.app/og-image.jpg"
+    />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
