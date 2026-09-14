@@ -171,7 +171,7 @@ export const projects: Project[] = [
       // (2026-09-13): su questo progetto il CV ha una sola frase, quindi non
       // bastava. Non c'è nulla di dedotto.
       context:
-        "Non l'ho scritta da zero: l'ho ereditata. Sono entrato come manutentore di un sistema già in produzione e ne ho imparato l'architettura a fondo, il che mi rendeva veloce sui bug piccoli — quelli che nessuno vuole aprire. La usano tra le 1.000 e le 3.000 utenze.",
+        "Sono entrato come manutentore di un sistema già in produzione e ne ho imparato l'architettura a fondo, il che mi rendeva veloce sui bug piccoli — quelli che nessuno vuole aprire.",
       contributions: [
         "Manutenzione del frontend e dell'intero sistema lato frontend",
         // Era "React 19": il committente ha corretto in 17 e ha aggiunto cosa
