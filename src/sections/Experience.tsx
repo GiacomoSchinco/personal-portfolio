@@ -3,6 +3,7 @@ import { cn } from "cn"
 import { Section } from "@/components/custom/Section"
 import { SectionHeading } from "@/components/custom/SectionHeading"
 import { MicroLabel } from "@/components/custom/MicroLabel"
+import { BulletList } from "@/components/custom/BulletList"
 import { TagList } from "@/components/custom/Chip"
 import { experienceGroups } from "@/data"
 import type { ExperienceItem } from "@/data"
@@ -69,23 +70,11 @@ function TimelineItem({ item }: { item: ExperienceItem }) {
       </p>
 
       {item.highlights && (
-        <ul className="mt-4 flex max-w-2xl flex-col gap-2">
-          {item.highlights.map((highlight) => (
-            <li
-              key={highlight}
-              className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground"
-            >
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "mt-2 h-1 w-1 shrink-0 rounded-full",
-                  isTech ? "bg-accent-primary/60" : "bg-muted-foreground/40"
-                )}
-              />
-              {highlight}
-            </li>
-          ))}
-        </ul>
+        <BulletList
+          items={item.highlights}
+          dot={isTech ? "bg-accent-primary/60" : "bg-muted-foreground/40"}
+          className="mt-4 max-w-2xl"
+        />
       )}
 
       <TagList items={item.tags} className="mt-4" />

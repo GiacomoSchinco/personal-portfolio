@@ -5,6 +5,7 @@ import { Section } from "@/components/custom/Section"
 import { SectionHeading } from "@/components/custom/SectionHeading"
 import { SurfaceCard } from "@/components/custom/SurfaceCard"
 import { MicroLabel } from "@/components/custom/MicroLabel"
+import { BulletList } from "@/components/custom/BulletList"
 import { TagList } from "@/components/custom/Chip"
 import { PillLink } from "@/components/custom/PillLink"
 import { GithubIcon } from "@/components/custom/BrandIcons"
@@ -51,30 +52,6 @@ function DetailSection({
       </h4>
       <div className="mt-3">{children}</div>
     </section>
-  )
-}
-
-/**
- * Elenco puntato del modale.
- * Stesso linguaggio visivo delle highlight in Esperienze: pallino accent,
- * testo muted. Era duplicato per `contributions` e `decisions`.
- */
-function DetailList({ items, dot }: { items: string[]; dot: string }) {
-  return (
-    <ul className="flex flex-col gap-2">
-      {items.map((item) => (
-        <li
-          key={item}
-          className="flex gap-2.5 text-sm leading-relaxed text-muted-foreground"
-        >
-          <span
-            aria-hidden="true"
-            className={cn("mt-2 h-1 w-1 shrink-0 rounded-full", dot)}
-          />
-          {item}
-        </li>
-      ))}
-    </ul>
   )
 }
 
@@ -172,9 +149,14 @@ function ProjectDetailsDialog({ project }: { project: Project }) {
       {/* `showCloseButton={false}` + bottone nostro: quello generato da shadcn
           annuncia "Close" agli screen reader, ed è l'unico testo non in
           italiano del sito. Il resto del comportamento (focus trap, ESC,
-          ripristino del focus) resta di Base UI. */}
+          ripristino del focus) resta di Base UI.
+
+          `data-lenis-prevent`: il pannello ha uno scroll interno
+          (`overflow-y-auto`) e senza l'attributo Lenis intercetterebbe la
+          rotella, muovendo la pagina sotto il modale invece del contenuto. */}
       <DialogContent
         showCloseButton={false}
+        data-lenis-prevent
         className="max-h-[85vh] gap-0 overflow-y-auto p-0 sm:max-w-2xl"
       >
         {/* Intestazione con lo stesso gradiente della copertina: il modale
@@ -220,13 +202,13 @@ function ProjectDetailsDialog({ project }: { project: Project }) {
 
           {!!details?.contributions?.length && (
             <DetailSection label="Cosa ho fatto">
-              <DetailList items={details.contributions} dot={accent.text} />
+              <BulletList items={details.contributions} dot={accent.dot} />
             </DetailSection>
           )}
 
           {!!details?.decisions?.length && (
             <DetailSection label="Perché queste scelte">
-              <DetailList items={details.decisions} dot={accent.text} />
+              <BulletList items={details.decisions} dot={accent.dot} />
             </DetailSection>
           )}
 
@@ -319,8 +301,8 @@ export function Projects() {
       <div className="flex flex-wrap items-end justify-between gap-6">
         <SectionHeading
           eyebrow="Progetti"
-          title="Cose che ho costruito"
-          description="Tre piattaforme aziendali e un prodotto che ho brevettato."
+          title="Dal prototipo al prodotto"
+          description="Alcuni dei progetti su cui ho lavorato nel tempo."
         />
 
         {github && (
@@ -336,131 +318,140 @@ export function Projects() {
       </div>
 
       <div className="mt-14 grid gap-4 md:grid-cols-2">
-        {projects.map((project) => {
-          const accent = accentClasses[project.accent]
-          const cover = project.media?.cover
-
-          /**
-           * Con un'immagine la copertina ha bisogno di altezza.
-           *
-           * La banda fissa da 144px su una card larga ~600px è un rapporto
-           * 4:1: `object-cover` ridurrebbe una foto a una striscia. Le
-           * proporzioni 16:10 valgono 380px, abbastanza per far vedere
-           * qualcosa. Senza immagine il gradiente è solo decorativo e 144px
-           * bastano — anzi, di più sarebbe spazio vuoto.
-           *
-           * Su desktop le card in evidenza tengono la copertina come colonna
-           * laterale: lì l'altezza la detta la card, quindi `md:aspect-auto`.
-           */
-          const coverBox = project.featured
-            ? [
-                "md:w-72 md:border-b-0 md:border-r",
-                cover ? "aspect-[16/10] md:aspect-auto" : "h-36",
-              ]
-            : [cover ? "aspect-[16/10]" : "h-36"]
-
-          return (
-            <SurfaceCard
-              key={project.slug}
-              as="article"
-              interactive
-              className={cn(
-                "flex flex-col",
-                project.featured && "md:col-span-2 md:flex-row"
-              )}
-            >
-              {/* Copertina: l'immagine se c'è, altrimenti il gradiente brand */}
-              <div
-                className={cn(
-                  "relative shrink-0 overflow-hidden border-b border-glass-border",
-                  coverBox
-                )}
-              >
-                {cover ? (
-                  <>
-                    {/* `alt` vuoto di proposito: il titolo è nella card accanto,
-                        quindi l'immagine è decorativa e non va annunciata due
-                        volte agli screen reader. */}
-                    <img
-                      src={cover.src}
-                      alt=""
-                      loading="lazy"
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
-                    {/* Velo: senza, il badge dell'anno è illeggibile su una
-                        schermata chiara. */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-transparent" />
-                  </>
-                ) : (
-                  <>
-                    <div
-                      className={cn(
-                        "absolute inset-0 bg-gradient-to-br",
-                        coverGradients[project.accent]
-                      )}
-                    />
-                    <div
-                      className={cn(
-                        "absolute -right-8 -bottom-12 h-40 w-40 rounded-full blur-[70px]",
-                        accent.glow
-                      )}
-                    />
-                  </>
-                )}
-                <span className="absolute top-4 left-4 rounded-full border border-glass-border bg-background/60 px-2.5 py-1 text-xs text-muted-foreground backdrop-blur-md">
-                  {project.year}
-                </span>
-              </div>
-
-              {/* Contenuto */}
-              <div className="flex flex-1 flex-col p-5 md:p-6">
-                {/* `flex-wrap` e niente `whitespace-nowrap` sull'etichetta.
-                    Un ruolo lungo ("Ideatore e titolare del brevetto") non
-                    stava accanto al titolo, e siccome `SurfaceCard` ha
-                    `overflow-hidden` veniva tagliato invece di andare a capo. */}
-                <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1">
-                  <h3
-                    className={cn(
-                      "font-medium tracking-tight text-foreground transition-colors",
-                      project.featured ? "text-xl md:text-2xl" : "text-lg"
-                    )}
-                  >
-                    {project.href ? (
-                      <a
-                        href={project.href}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="after:absolute after:inset-0 after:content-['']"
-                      >
-                        {project.title}
-                      </a>
-                    ) : (
-                      project.title
-                    )}
-                  </h3>
-
-                  <span className={cn("text-xs", accent.text)}>
-                    {project.role}
-                  </span>
-                </div>
-
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  {project.description}
-                </p>
-
-                <TagList items={project.tags} className="mt-5" />
-
-                {/* Azioni: z-10 per restare cliccabili sopra l'overlay del
-                    titolo, quando la card è un link. */}
-                <div className="relative z-10 mt-5 flex flex-wrap items-center gap-4 pt-1">
-                  <ProjectDetailsDialog project={project} />
-                  <ProjectLinks project={project} />
-                </div>
-              </div>
-            </SurfaceCard>
-          )
-        })}
+        {projects.map((project) => (
+          <ProjectCard key={project.slug} project={project} />
+        ))}
       </div>
     </Section>
+  )
+}
+
+/**
+ * Card di un progetto.
+ *
+ * Locale e non esportata: è il layout di questa sezione, non un componente
+ * riutilizzabile, quindi non ha niente a che fare con `custom/`. Sta fuori dal
+ * `map()` perché novanta righe di JSX dentro un `.map()` nascondono com'è fatta
+ * la griglia — stessa scelta già fatta per `ProjectDetailsDialog`.
+ */
+function ProjectCard({ project }: { project: Project }) {
+  const accent = accentClasses[project.accent]
+  const cover = project.media?.cover
+
+  /**
+   * Con un'immagine la copertina ha bisogno di altezza.
+   *
+   * La banda fissa da 144px su una card larga ~600px è un rapporto
+   * 4:1: `object-cover` ridurrebbe una foto a una striscia. Le
+   * proporzioni 16:10 valgono 380px, abbastanza per far vedere
+   * qualcosa. Senza immagine il gradiente è solo decorativo e 144px
+   * bastano — anzi, di più sarebbe spazio vuoto.
+   *
+   * Su desktop le card in evidenza tengono la copertina come colonna
+   * laterale: lì l'altezza la detta la card, quindi `md:aspect-auto`.
+   */
+  const coverBox = project.featured
+    ? [
+      "md:w-72 md:border-b-0 md:border-r",
+      cover ? "aspect-[16/10] md:aspect-auto" : "h-36",
+    ]
+    : [cover ? "aspect-[16/10]" : "h-36"]
+
+  return (
+    <SurfaceCard
+      as="article"
+      interactive
+      className={cn(
+        "flex flex-col",
+        project.featured && "md:col-span-2 md:flex-row"
+      )}
+    >
+      {/* Copertina: l'immagine se c'è, altrimenti il gradiente brand */}
+      <div
+        className={cn(
+          "relative shrink-0 overflow-hidden border-b border-glass-border",
+          coverBox
+        )}
+      >
+        {cover ? (
+          <>
+            {/* `alt` vuoto di proposito: il titolo è nella card accanto,
+                quindi l'immagine è decorativa e non va annunciata due
+                volte agli screen reader. */}
+            <img
+              src={cover.src}
+              alt=""
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* Velo: senza, il badge dell'anno è illeggibile su una
+                schermata chiara. */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-transparent" />
+          </>
+        ) : (
+          <>
+            <div
+              className={cn(
+                "absolute inset-0 bg-gradient-to-br",
+                coverGradients[project.accent]
+              )}
+            />
+            <div
+              className={cn(
+                "absolute -right-8 -bottom-12 h-40 w-40 rounded-full blur-[70px]",
+                accent.glow
+              )}
+            />
+          </>
+        )}
+        <span className="absolute top-4 left-4 rounded-full border border-glass-border bg-background/60 px-2.5 py-1 text-xs text-muted-foreground backdrop-blur-md">
+          {project.year}
+        </span>
+      </div>
+
+      {/* Contenuto */}
+      <div className="flex flex-1 flex-col p-5 md:p-6">
+        {/* `flex-wrap` e niente `whitespace-nowrap` sull'etichetta.
+            Un ruolo lungo ("Ideatore e titolare del brevetto") non
+            stava accanto al titolo, e siccome `SurfaceCard` ha
+            `overflow-hidden` veniva tagliato invece di andare a capo. */}
+        <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1">
+          <h3
+            className={cn(
+              "font-medium tracking-tight text-foreground transition-colors",
+              project.featured ? "text-xl md:text-2xl" : "text-lg"
+            )}
+          >
+            {project.href ? (
+              <a
+                href={project.href}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="after:absolute after:inset-0 after:content-['']"
+              >
+                {project.title}
+              </a>
+            ) : (
+              project.title
+            )}
+          </h3>
+
+          <span className={cn("text-xs", accent.text)}>{project.role}</span>
+        </div>
+
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          {project.description}
+        </p>
+
+        <TagList items={project.tags} className="mt-5" />
+
+        {/* Azioni: z-10 per restare cliccabili sopra l'overlay del
+            titolo, quando la card è un link. */}
+        <div className="relative z-10 mt-5 flex flex-wrap items-center gap-4 pt-1">
+          <ProjectDetailsDialog project={project} />
+          <ProjectLinks project={project} />
+        </div>
+      </div>
+    </SurfaceCard>
   )
 }

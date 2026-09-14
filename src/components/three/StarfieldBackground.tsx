@@ -51,9 +51,8 @@ type StarfieldBackgroundProps = {
  * Campo stellato pronto da usare come sfondo di una sezione.
  *
  * `StarfieldParticles` è un oggetto di scena (restituisce `<points>`), quindi
- * va montato dentro un `<Canvas>`: questo wrapper fa quello che `MeshGradient`
- * fa già per conto suo — così nella sezione basta sostituire il componente,
- * senza dover configurare un Canvas in linea.
+ * va montato dentro un `<Canvas>`: questo wrapper se ne occupa, così nella
+ * sezione basta mettere il componente, senza configurare un Canvas in linea.
  *
  * `alpha: true` è voluto: lo sfondo del Canvas resta trasparente, così si vede
  * il colore della sezione (`bg-background`) e le stelle rimangono chiare.

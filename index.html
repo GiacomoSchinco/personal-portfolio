@@ -5,11 +5,48 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico?v=3" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Giacomo Schinco — Developer &amp; Product Owner</title>
+    <title>Giacomo Schinco — Software Developer &amp; Product Manager</title>
     <meta
       name="description"
-      content="Portfolio di Giacomo Schinco"
+      content="Giacomo Schinco — Software Developer &amp; Product Manager. Portfolio, progetti, contatti."
     />
+
+    <!--
+      Open Graph: è quello che leggono LinkedIn, WhatsApp, Telegram e Slack
+      quando qualcuno incolla il link. Quelle piattaforme **non aprono il
+      sito**: scaricano l'HTML e leggono solo questi tag. Senza `og:image`
+      l'anteprima esce con il riquadro grigio vuoto.
+
+      ⚠️ Due cose da non dimenticare quando si tocca questo blocco:
+
+      - `og:image` deve essere un URL **assoluto** (`https://dominio/og-image.jpg`).
+        Oggi è relativo perché il sito non è ancora online: LinkedIn e Facebook
+        scartano i percorsi relativi, quindi l'anteprima resterà senza immagine
+        finché non si mette l'indirizzo vero. Va aggiornato anche `og:url`.
+      - `og:description` ripete `site.tagline` di `src/data/site.ts`: qui non si
+        possono importare i dati, perché i crawler non eseguono JavaScript. Se
+        cambia là, va cambiato anche qui.
+    -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:site_name" content="Giacomo Schinco" />
+    <meta
+      property="og:title"
+      content="Giacomo Schinco — Software Developer &amp; Product Manager"
+    />
+    <meta
+      property="og:description"
+      content="Dall'ideazione all'architettura software. Costruisco soluzioni web complete e trasformo visioni di business in prodotti digitali concreti."
+    />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="La Hero del portfolio: «Ciao, sono Giacomo. Software Developer &amp; Product Manager» su uno sfondo stellato."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
     <!--
       Colore della barra del browser su mobile: senza, resta chiara sopra un
       sito scuro. È l'approssimazione esadecimale di --brand-bg-base

@@ -169,14 +169,41 @@
     @apply font-sans;
     color-scheme: dark;
     background-color: var(--brand-bg-base);
-    scroll-behavior: smooth;
+    /*
+      Niente `scroll-behavior: smooth`: lo scroll fluido lo fa Lenis, montato
+      in `main.tsx`. I due meccanismi si sommano — Lenis scrive la posizione a
+      ogni frame e il browser la ri-animerebbe da capo, con il risultato che lo
+      scorrimento "striscia" o non arriva a destinazione.
+
+      Chi ha `prefers-reduced-motion` non resta scoperto: Lenis ha
+      `respectReducedMotion` attivo di default e rende istantanei gli
+      scorrimenti programmatici.
+    */
   }
 
-  /* Rispetta chi ha ridotto le animazioni di sistema */
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
+  /*
+    CSS consigliato da Lenis (adattato da `lenis/dist/lenis.css`), tranne la
+    parte `autoToggle`, che il progetto non usa.
+
+    `.lenis-stopped { overflow: clip }` è la regola che ferma davvero il
+    documento quando un overlay è aperto: `lenis.stop()` da solo blocca la
+    rotella, ma non i gesti touch, che Lenis non intercetta.
+  */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+
+  .lenis [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
   }
 }
 

@@ -1,9 +1,11 @@
 import { useEffect, useRef } from "react"
 import { X } from "lucide-react"
+import { useLenis } from "lenis/react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import type { NavLink } from "@/data"
 import { MicroLabel } from "@/components/custom/MicroLabel"
+import { IconButton } from "@/components/custom/IconButton"
 
 type MobileMenuProps = {
   open: boolean
@@ -16,13 +18,28 @@ export function MobileMenu({ open, onClose, links }: MobileMenuProps) {
   const linksRef = useRef<HTMLLIElement[]>([])
   const ctaRef = useRef<HTMLAnchorElement>(null)
 
-  // Blocco scroll body
+  const lenis = useLenis()
+
+  /*
+    Blocco scroll.
+
+    `body { overflow: hidden }` ferma lo scroll nativo. Serve anche
+    `lenis.stop()`: la pagina è ferma, ma Lenis continuerebbe a incassare i
+    gesti e ad accumulare spostamenti, e alla chiusura riporterebbe il
+    documento in un punto che nessuno ha mai visto. `start()` rimette invece la
+    posizione interna in pari con quella reale.
+  */
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : ""
+
+    if (open) lenis?.stop()
+    else lenis?.start()
+
     return () => {
       document.body.style.overflow = ""
+      lenis?.start()
     }
-  }, [open])
+  }, [open, lenis])
 
   // ESC per chiudere
   useEffect(() => {
@@ -88,13 +105,9 @@ export function MobileMenu({ open, onClose, links }: MobileMenuProps) {
         {/* Header */}
         <div className="flex items-center justify-between">
           <MicroLabel>Menu</MicroLabel>
-          <button
-            onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-border bg-glass-bg text-foreground backdrop-blur-md transition-colors hover:bg-glass-bg-strong"
-            aria-label="Chiudi menu"
-          >
+          <IconButton onClick={onClose} aria-label="Chiudi menu">
             <X size={20} />
-          </button>
+          </IconButton>
         </div>
 
         {/* Link */}

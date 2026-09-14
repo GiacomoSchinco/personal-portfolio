@@ -1,5 +1,10 @@
-export { site, navLinks, socials } from "./site"
-export type { NavLink, Social } from "./site"
+export { site, navLinks, socials, privacyNotice } from "./site"
+export type {
+  NavLink,
+  Social,
+  PrivacyClause,
+  PrivacyNotice,
+} from "./site"
 
 export { about } from "./about"
 export type { Stat } from "./about"

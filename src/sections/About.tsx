@@ -5,6 +5,7 @@ import { SectionGlow } from "@/components/custom/SectionGlow"
 import { SurfaceCard } from "@/components/custom/SurfaceCard"
 import { IconTile } from "@/components/custom/IconTile"
 import { MicroLabel } from "@/components/custom/MicroLabel"
+import { MetaItem } from "@/components/custom/MetaItem"
 import { SocialIcon } from "@/components/custom/SocialIcon"
 import { about, site, socials } from "@/data"
 
@@ -61,17 +62,10 @@ export function About() {
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
-            <span className="inline-flex items-center gap-2">
-              <MapPin size={16} className="text-accent-tertiary" />
-              {site.location}
-            </span>
-            <a
-              href={`mailto:${site.email}`}
-              className="inline-flex items-center gap-2 transition-colors hover:text-foreground"
-            >
-              <Mail size={16} className="text-accent-tertiary" />
+            <MetaItem icon={MapPin}>{site.location}</MetaItem>
+            <MetaItem icon={Mail} href={`mailto:${site.email}`}>
               {site.email}
-            </a>
+            </MetaItem>
           </div>
         </div>
 

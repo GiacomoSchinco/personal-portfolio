@@ -658,3 +658,173 @@ perché è `background-color`.
 
 Da confermare su Firefox prima di intervenire; la correzione probabile è
 avvolgere in `@supports` invece di elencare i due prefissi.
+
+---
+
+## 12. I CTA della Hero sono invisibili (ma cliccabili)
+
+### Sintomo
+
+I due pulsanti della Hero ci sono, rispondono al mouse, ma non si vedono: nessun
+bordo, nessun testo, nessun fondo. Il resto della Hero (badge, titolo,
+paragrafo, meta) è al suo posto.
+
+### Diagnosi
+
+`getComputedStyle` sui due `<a data-hero-cta>`:
+
+```
+opacity: 0
+transform: matrix(1, 0, 0, 1, 0, 20)   /* = translate(0px, 20px) */
+style:    "translate: none; rotate: none; scale: none; opacity: 0; transform: translate(0px, 20px)"
+```
+
+Cioè **esattamente lo stato di partenza della tween**, scritto in linea da GSAP.
+Gli altri quattro reveal finivano a `opacity: 1` / `translate(0, 0)`, quindi la
+timeline arrivava in fondo: era solo la tween dei CTA a non animare nulla.
+
+Il dettaglio che chiude il caso: gli elementi rotti sono due `Button` di shadcn,
+gli **unici** elementi animati da GSAP in tutto il sito che portano
+`transition-all` (è nella base di `buttonVariants`, `ui/button.tsx`); `Navbar`,
+`MobileMenu`, `CardCarousel` e il resto della Hero usano `transition-colors`.
+`transition-all` copre `opacity` **e** `transform`, le due proprietà che la
+tween scriveva.
+
+### Causa
+
+`gsap.from()` non dichiara il valore di **arrivo**: lo legge dall'elemento nel
+momento in cui la tween viene creata. Con `StrictMode` (attivo in `main.tsx`)
+l'effetto di `useGSAP` gira due volte: il primo passaggio lascia addosso
+all'elemento i propri valori di partenza, e il secondo — che riparte da lì — li
+registra come valori di arrivo. La tween anima da 0 a 0 e l'elemento resta
+invisibile per sempre.
+
+Sugli altri elementi lo stato veniva invece ripristinato correttamente e il
+valore letto era quello naturale (`opacity: 1`), quindi la stessa tween
+funzionava.
+
+### Soluzione
+
+Due modifiche in `src/sections/Hero.tsx`:
+
+1. **`fromTo` al posto di `from`** in tutti e cinque i reveal: partenza e arrivo
+   espliciti, la tween non deduce più niente dallo stato corrente.
+2. **`transition-colors`** nei `className` dei due CTA: `cn` (tailwind-merge)
+   scarta il `transition-all` di base. È la regola §6.3 di AGENTS.md — se GSAP
+   anima `transform`/`opacity`, la `transition` CSS non deve coprirli.
+
+### ❌ Da non fare
+
+- **`immediateRender: false`** per aggirare il problema: la tween non verrebbe
+  più corrotta, ma l'elemento resterebbe visibile finché la timeline non arriva
+  alla sua posizione, per poi saltare a `opacity: 0` e rientrare. Si vede il lampo.
+- **Togliere `transition-all` da `ui/button.tsx`**: è un file generato, la
+  prossima rigenerazione cancella la modifica.
+
+### Regola generale
+
+`from()` presuppone che lo stato dell'elemento sia quello naturale. In React 19
+con `StrictMode` non è garantito: usa `fromTo()` nei reveal, sempre. E non
+lasciare che una `transition` CSS copra le proprietà che GSAP anima.
+
+### Verifica
+
+```powershell
+# dopo il reload, a fine animazione (~2s)
+getComputedStyle(document.querySelector('[data-hero-cta]')).opacity  // "1"
+```
+
+---
+
+## 13. I pallini degli elenchi puntati sono invisibili
+
+### Sintomo
+
+Nel modale dei Progetti la sezione "Cosa ho fatto" elenca le voci **senza il
+pallino**: si vedono solo righe di testo rientrate.
+
+### Causa
+
+L'elenco puntato del modale (allora `DetailList`, locale a `Projects.tsx`)
+riceveva `dot={accent.text}`, cioè `text-accent-primary`. Il pallino però è uno
+`<span>` **vuoto** di 4×4px colorato con un `bg-*`: una classe di testo su un
+elemento senza testo non disegna nulla, e il fondo resta `rgba(0, 0, 0, 0)`.
+
+Lo stesso elenco in Esperienze passava `bg-accent-primary/60` e si vedeva: il
+valore giusto era scritto in un posto solo.
+
+```js
+// verifica
+getComputedStyle(document.querySelector('ul > li > span')).backgroundColor
+// → "rgba(0, 0, 0, 0)"
+```
+
+### Soluzione
+
+Due cose, in quest'ordine:
+
+- L'elenco è diventato un componente condiviso, `components/custom/BulletList.tsx`:
+  le due copie (modale dei Progetti e highlight in Esperienze) erano già
+  divergenti proprio su questo, e da due file diversi la svista non si vede.
+- Nuovo token `dot` in `src/lib/accents.ts` (`bg-accent-*/60`). Il `dot` di
+  `BulletList` è documentato come classe di **fondo**: un pallino non è testo,
+  e ora il tipo di valore lo dice.
+
+### ❌ Da non fare
+
+Usare `accent.bg` (`/10`) per il pallino: su 4px di lato è troppo tenue, si vede
+a stento. Serve un fondo pieno.
+
+---
+
+## 14. Il form contatti non invia
+
+### Sintomo
+
+Uno di questi tre:
+
+- il modulo non c'è e al suo posto c'è "Il modulo è momentaneamente fuori
+  servizio";
+- il modulo c'è ma l'invio risponde "Il messaggio non è partito";
+- l'invio risponde "Messaggio inviato" ma la mail non arriva.
+
+### Causa
+
+Il form consegna i messaggi con **Web3Forms** e ha bisogno di
+`VITE_WEB3FORMS_KEY`. Due trappole:
+
+1. **Vite incorpora la variabile nel bundle al momento della build.** Non viene
+   letta a runtime: se su Vercel la aggiungi *dopo* un deploy, quel deploy
+   continua a girare senza. Serve un nuovo deploy.
+2. **Il prefisso `VITE_` è obbligatorio.** Una variabile chiamata `WEB3FORMS_KEY`
+   non viene mai esposta al client.
+
+Se la chiave manca, `Contact.tsx` **non disegna il modulo**: è una scelta
+volontaria, un form che finge di inviare è peggio di nessun form.
+
+### Soluzione
+
+- **In locale**: incolla la chiave in `.env.local` (ignorato da git, vedi
+  `.env.example`) e riavvia il dev server se non l'ha già fatto da solo.
+- **Su Vercel**: Settings → Environment Variables → `VITE_WEB3FORMS_KEY`, poi
+  **Redeploy**. Salvare la variabile non basta.
+
+### Verifica
+
+L'input nascosto del form non deve essere vuoto:
+
+```js
+document.querySelector('form [name="access_key"]').value   // la chiave
+```
+
+Per vedere cosa parte davvero, in DevTools → Network → la richiesta a
+`api.web3forms.com/submit` → Payload. Se l'invio risponde *"Invalid access key"*,
+il payload è arrivato ma la chiave non è valida: controllala nel pannello di
+Web3Forms.
+
+### ❌ Da non fare
+
+Mettere la chiave in chiaro nel codice. Non è un segreto — Web3Forms la vuole
+nel client e la tratta come un alias dell'indirizzo che riceve i messaggi — ma
+fuori dal repository si cambia e si revoca senza un commit, e non finisce in
+tutti i fork.

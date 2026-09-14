@@ -23,6 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 
+# Variabili d'ambiente: mai committate, tranne l'esempio.
+# `.env.local` è già coperto da `*.local` qui sotto.
+.env
+.env.*
+!.env.example
+
 # Documentazione interna — non va pubblicata su GitHub
 AGENTS.md
 TROUBLESHOOTING.md

@@ -1,4 +1,4 @@
-import avatarUrl from "@/assets/avatar.jpeg"
+import avatarUrl from "@/assets/avatar.jpg"
 
 export type NavLink = {
   label: string
@@ -44,12 +44,83 @@ export const site = {
   /**
    * Avatar per la sezione "Chi sono".
    * L'immagine sta in `src/assets/`, quindi va IMPORTATA (non referenziata come
-   * "/avatar.jpeg": quella sintassi funziona solo per i file in `public/`).
+   * "/avatar.jpg": quella sintassi funziona solo per i file in `public/`).
    * Così Vite la elabora e le aggiunge un hash al nome.
    *
-   * ⚠️ Pesa 163 KB per essere mostrata a 56px: conviene ridimensionarla.
+   * ⚠️ Il file è ridimensionato a 168×168 e pesa 8 KB. È mostrato a 56px,
+   * quindi 168 copre anche gli schermi a 3x: non serve altro. L'originale
+   * pesava 163 KB, venti volte tanto, per la stessa immagine.
    */
   avatarUrl,
+}
+
+export type PrivacyClause = {
+  /** Titolo della clausola, es. "Per quanto tempo". */
+  label: string
+  text: string
+}
+
+export type PrivacyNotice = {
+  /** Riga sempre visibile sotto il bottone di invio. */
+  summary: string
+  /** Etichetta del comando che apre il testo esteso. */
+  openLabel: string
+  clauses: PrivacyClause[]
+}
+
+/**
+ * Informativa privacy del modulo contatti.
+ *
+ * Sta qui e non dentro `Contact.tsx` perché è testo, e in questo progetto i
+ * testi vivono in `@/data` (§6.1 di AGENTS.md): il componente decide solo dove
+ * mostrarla.
+ *
+ * Serve perché il form non spedisce i dati a un server nostro, li consegna a
+ * Web3Forms — un fornitore esterno che a sua volta li conserva. Chi compila
+ * deve poterlo sapere **prima** di premere Invia, e il sito è una one-page
+ * senza altre pagine dove metterlo.
+ *
+ * ⚠️ I dati di questa informativa vengono dal documento ufficiale di Web3Forms
+ * (`web3forms.com/privacy`, aggiornato 13/07/2026): ruolo di responsabile del
+ * trattamento, sottoproduttori, filtri antispam e conservazione massima di tre
+ * anni. Se loro cambiano fornitori o tempistiche, questa è la sezione da
+ * rileggere. Non aggiungere qui dettagli "per completezza": ogni frase deve
+ * corrispondere a qualcosa che il modulo fa davvero.
+ *
+ * ⚠️ Da confermare: la base giuridica dichiarata è l'**interesse legittimo** a
+ * rispondere a chi scrive, che non richiede una casella da spuntare. Se il
+ * committente preferisce il consenso esplicito, va aggiunta una checkbox
+ * obbligatoria prima del bottone: oggi non c'è, ed è una scelta.
+ */
+export const privacyNotice: PrivacyNotice = {
+  summary: "Uso nome, email e messaggio solo per risponderti: nient'altro.",
+  openLabel: "Come tratto i tuoi dati",
+  clauses: [
+    {
+      label: "Titolare",
+      text: "Il titolare del trattamento è Giacomo Schinco.",
+    },
+    {
+      label: "Quali dati",
+      text: "Solo quelli che scrivi tu: nome, email e il testo del messaggio. Il sito non usa cookie né strumenti di analisi.",
+    },
+    {
+      label: "Per cosa",
+      text: "Per leggere la tua richiesta e risponderti. Nessuna newsletter, nessun profilo, nessun uso pubblicitario. La base giuridica è l'interesse legittimo a rispondere a chi mi contatta.",
+    },
+    {
+      label: "Dove finiscono",
+      text: "Il modulo non ha un server mio: i dati passano da Web3Forms, che me li consegna via email. Web3Forms tratta i dati come responsabile e si appoggia ad Amazon Web Services, Cloudflare e Hetzner; indirizzo IP ed email possono inoltre essere confrontati con i filtri antispam Akismet e CleanTalk. Parte di questa infrastruttura è fuori dall'Unione Europea, con trasferimenti coperti dalle clausole contrattuali standard.",
+    },
+    {
+      label: "Per quanto tempo",
+      text: "Il messaggio resta nella mia casella per il tempo necessario a gestire la richiesta. Web3Forms cancella i dati che ha ricevuto entro un massimo di tre anni.",
+    },
+    {
+      label: "Cosa puoi chiedermi",
+      text: "Di vedere, correggere o cancellare i tuoi dati, di limitarne l'uso o di opporti al trattamento. Se ritieni che siano stati usati male puoi rivolgerti al Garante per la protezione dei dati personali (garanteprivacy.it).",
+    },
+  ],
 }
 
 /** Voci della navbar e del menu mobile. Tutte in italiano. */

@@ -10,6 +10,19 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
+## Variabili d'ambiente
+
+Copia `.env.example` in `.env.local` (ignorato da git) e compila i valori.
+
+| Variabile | A cosa serve |
+|---|---|
+| `VITE_WEB3FORMS_KEY` | Chiave del form contatti (Web3Forms). Senza, la sezione Contatti non mostra il modulo e lascia solo il link email |
+
+In produzione si impostano nel provider di hosting — su Vercel: **Settings →
+Environment Variables**. ⚠️ Vite incorpora le variabili nel bundle **al momento
+della build**: dopo averla aggiunta serve un nuovo deploy, altrimenti il sito
+continua a girare con quella vecchia (o senza).
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)

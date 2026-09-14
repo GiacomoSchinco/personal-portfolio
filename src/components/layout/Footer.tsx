@@ -1,5 +1,6 @@
 import { ArrowUp } from "lucide-react"
 import { MicroLabel } from "@/components/custom/MicroLabel"
+import { StatusDot } from "@/components/custom/StatusDot"
 import { PillLink } from "@/components/custom/PillLink"
 import { SocialIcon, socialIcons } from "@/components/custom/SocialIcon"
 import { navLinks, site, socials } from "@/data"
@@ -17,10 +18,7 @@ export function Footer() {
               href="#top"
               className="inline-flex items-center gap-2 text-sm font-medium tracking-tight text-foreground"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-tertiary opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-tertiary" />
-              </span>
+              <StatusDot size="md" />
               {site.name}
             </a>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">

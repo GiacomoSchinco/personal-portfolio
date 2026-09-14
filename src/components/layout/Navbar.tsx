@@ -3,6 +3,8 @@ import { Menu } from "lucide-react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { MobileMenu } from "./MobileMenu"
+import { IconButton } from "@/components/custom/IconButton"
+import { StatusDot } from "@/components/custom/StatusDot"
 import { navLinks, site } from "@/data"
 
 export function Navbar() {
@@ -35,10 +37,7 @@ export function Navbar() {
             className="group flex items-center gap-2 text-sm font-medium tracking-tight text-foreground"
             aria-label={`${site.name} — torna all'inizio`}
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-tertiary opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-tertiary" />
-            </span>
+            <StatusDot size="md" />
             {site.name}
           </a>
 
@@ -67,13 +66,13 @@ export function Navbar() {
           </a>
 
           {/* Hamburger mobile */}
-          <button
+          <IconButton
             onClick={() => setMobileOpen(true)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-border bg-glass-bg text-foreground backdrop-blur-md transition-colors hover:bg-glass-bg-strong md:hidden"
+            className="md:hidden"
             aria-label="Apri menu"
           >
             <Menu size={20} />
-          </button>
+          </IconButton>
         </div>
       </nav>
 
